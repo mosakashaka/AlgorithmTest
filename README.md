@@ -101,3 +101,32 @@ response:
 	"totalQuantity": 5
 }
 ```
+
+## Calculator Controller
+
+A simple calculator supports +/-/*/\/ and brackets.
+
+Use a `List` to parse and calculate the result. The main idea is:
+
+1. Parse and read each part of the expression to a class of `Argument`, which can be of type `Number`/`Operator`/`Brackets`
+2. Don't start any computation until we meet the first close bracket. 
+3. And when we meet a close bracket, calculate the sublist , which start from last open bracket to the close bracket, of the `Argument List`.
+	- the calculation loops through this sublist for 2 times, first do multiply and divide, second do the plus and substract.
+	- replace the sublist of the original `argument list` with a single argument of a number, which is the result we've just calculated from this sublist.
+4. Go on parsing till the end, in this process, we may do as many times as step 3 as we encounter the number of bracket pair.
+5. When we reach the end, do step 3 one more time. But this time, the input should be the full `Argument List`.
+
+### sample input
+
+request
+
+```
+//3*(4+5)*6/2-1/(2+6)
+https://localhost:44308/api/Calculator?expr=3%2A%284%2B5%29%2A6%2F2-1%2F%282%2B6%29
+```
+
+response
+
+```
+80.875
+```
